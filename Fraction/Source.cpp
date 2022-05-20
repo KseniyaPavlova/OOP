@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 using namespace std;
 using std::cin;
 using std::cout;
@@ -7,9 +7,9 @@ using std::endl;
 #define delimiter "\n------------------------------------------\n"
 class Fraction
 {
-	int number;		//целое число
-	int numerator;	//числитель
-	int denominator;//знаменатель
+	int number;		//С†РµР»РѕРµ С‡РёСЃР»Рѕ
+	int numerator;	//С‡РёСЃР»РёС‚РµР»СЊ
+	int denominator;//Р·РЅР°РјРµРЅР°С‚РµР»СЊ
 public:
 	int get_number() const
 	{
