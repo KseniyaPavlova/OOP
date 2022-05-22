@@ -1,19 +1,16 @@
 ﻿#include<iostream>
 using namespace std;
-using std::cin;
-using std::cout;
-using std::endl;
 
 #define delimiter "\n------------------------------------------\n"
 class Fraction
 {
-	int number;		//целое число
+	int integer;		//целое число
 	int numerator;	//числитель
 	int denominator;//знаменатель
 public:
-	int get_number() const
+	int get_integer() const
 	{
-		return number;
+		return integer;
 	}
 	int get_numerator() const
 	{
@@ -23,9 +20,9 @@ public:
 	{
 		return denominator;
 	}
-	void set_number(int number)
+	void set_integer(int integer)
 	{
-		this->number = number;
+		this->integer = integer;
 	}
 	void set_numerator(int numerator)
 	{
@@ -36,42 +33,38 @@ public:
 		if (denominator == 0) denominator = 1;
 		this->denominator = denominator;
 	}
-
 	//Constructors
+	Fraction(int integer, int numerator, int denominator)
+	{
+		this->integer = integer;
+		this->numerator = numerator;
+		this->set_denominator(denominator);
+		cout << "Constructor:\t\t" << this << endl;
+	}
 	Fraction()
 	{
-		this->number = 0;
+		this->integer = 0;
 		this->numerator = 0;
 		this->denominator = 1;
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	Fraction(int number)
+	Fraction(int integer)
 	{
-		this->number = number;
+		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
-		cout << "1Constructor:\t\t" << this << endl;
+		cout << "1argConstructor:\t\t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
 	{
-		this->number = 0;
+		this->integer = 0;
 		this->numerator = numerator;
-		this->denominator = denominator;
-		cout << "2Constructor:\t\t" << this << endl;
-	}
-	Fraction(int number, int numerator, int denominator)
-	{
-		this->number = number;
-		this->numerator = numerator;
-		this->denominator = denominator;
-		/*this->set_number(number);
-		this->set_numerator(numerator);
-		this->set_denominator(denominator);*/
+		this->set_denominator(denominator);
 		cout << "Constructor:\t\t" << this << endl;
 	}
 	Fraction(const Fraction& other)
 	{
-		this->number = other.number;
+		this->integer = other.integer;
 		this->numerator = other.numerator;
 		this->denominator = other.denominator;
 		cout << "CopyConstructor:\t" << this << endl;
@@ -81,31 +74,239 @@ public:
 		cout << "Destructor:\t\t" << this << endl;
 	}
 
+	// Operators
+	Fraction& operator=(const Fraction& other)
+	{
+		this->integer = other.integer;
+		this->numerator = other.numerator;
+		this->denominator = other.denominator;
+		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	Fraction& operator+= (Fraction right)
+	{
+		this->to_improper();
+		right.to_improper();
+		this->numerator = this->numerator*right.denominator + right.numerator*this->denominator;
+		this->denominator = this->denominator*right.denominator;
+		return *this;
+	}
+	Fraction& operator-= (Fraction right)
+	{
+		this->to_improper();
+		right.to_improper();
+		this->numerator = this->numerator*right.denominator - right.numerator*this->denominator;
+		this->denominator = this->denominator*right.denominator;
+		return *this;
+	}
+	Fraction& operator*=(Fraction right)
+	{
+		this->to_improper();
+		right.to_improper();
+		this->numerator = this->numerator*right.numerator;
+		this->denominator = this->denominator*right.denominator;
+		return *this;
+	}
+	Fraction& operator/=(Fraction right)
+	{
+		this->to_improper();
+		right.to_improper();
+		this->numerator = this->numerator*right.denominator;
+		this->denominator = this->denominator*right.numerator;
+		return *this;
+	}
+	Fraction& operator++() 
+	{
+		integer++;
+		return *this;
+	}
+	Fraction operator++ (int) 
+	{
+		Fraction old = *this;
+		integer++;
+		return old;
+	}
+	Fraction& operator--()
+	{
+		integer--;
+		return *this;
+	}
+	Fraction operator-- (int) 
+	{
+		Fraction old = *this;
+		integer--;
+		return old;
+	}
 	// Methods
+	void to_proper()
+	{
+		//переводит дробь в правильную (выделяет целую часть)
+		integer += numerator / denominator;
+		numerator %= denominator;
+	}
+	void to_improper()
+	{
+		//переводит дробь в неправильную (выделяет целую часть)
+		numerator += integer*denominator;
+		integer = 0;
+	}
 	void print()const
 	{
-		if (number)cout << number;
-		if (/*number && */numerator)cout << "(" << numerator << "/" << denominator << ")";
-		if (number == 0 && numerator == 0)cout << 0;
+		if (integer)cout << integer;
+		if (numerator)
+		{
+			if (integer)cout << "(";
+			cout << numerator << "/" << denominator;
+			if (integer)cout << ")";
+		}
+		if (integer == 0 && numerator == 0)cout << 0;
 		cout << endl;
 	}
 };
-
-void main()
+Fraction operator/(Fraction left, Fraction right)
 {
-	setlocale(LC_ALL, "");
-	Fraction A;
-	A.print();
-
-	Fraction B(10);
-	B.print();
-
-	Fraction C(3, 4);
-	C.print();
-
-	Fraction D(5, 2, 3);
-	D.print();
-
-	Fraction E = A;
-	E.print();
+	left.to_improper();
+	right.to_improper();
+	Fraction result
+	(
+		left.get_numerator()*right.get_denominator(),
+		left.get_denominator()*right.get_numerator()
+	);
+	return result;
 }
+Fraction operator+(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	Fraction result
+	(
+		left.get_numerator()*right.get_denominator() + right.get_numerator()*left.get_denominator(),
+		left.get_denominator()*right.get_denominator()
+	);
+	result.to_proper();
+	return result;
+}
+Fraction operator-(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	Fraction result
+	(
+		left.get_numerator()*right.get_denominator() - right.get_numerator()*left.get_denominator(),
+		left.get_denominator()*right.get_denominator()
+	);
+	result.to_proper();
+	return result;
+}
+	Fraction operator*(Fraction left, Fraction right)
+	{
+		left.to_improper();
+		right.to_improper();
+		/*Fraction result;
+		result.set_numerator(left.get_numerator()*right.get_numerator());
+		result.set_denominator(left.get_denominator()*right.get_denominator());*/
+		/*Fraction result;
+		(
+			left.get_numerator()*right.get_numerator(),
+			left.get_denominator()*right.get_denominator()
+		);
+		result.to_proper();
+		return result;*/
+		return Fraction
+		(
+			left.get_numerator()*right.get_numerator(),
+			left.get_denominator()*right.get_denominator()
+		);
+	}
+	bool operator<(Fraction left, Fraction right)
+	{
+		left.to_improper();
+		right.to_improper();
+		if (left.get_numerator()*right.get_denominator() < right.get_numerator()*left.get_denominator())
+			return true;
+		else return false;
+	}
+	bool operator>(Fraction left, Fraction right)
+	{
+		left.to_improper();
+		right.to_improper();
+		if (left.get_numerator()*right.get_denominator() > right.get_numerator()*left.get_denominator())
+			return true;
+		else return false;
+	}
+	bool operator<=(Fraction left, Fraction right)
+	{
+		left.to_improper();
+		right.to_improper();
+		if (left.get_numerator()*right.get_denominator() <= right.get_numerator()*left.get_denominator())
+			return true;
+		else return false;
+	}
+	bool operator>=(Fraction left, Fraction right)
+	{
+		left.to_improper();
+		right.to_improper();
+		if (left.get_numerator()*right.get_denominator() >= right.get_numerator()*left.get_denominator())
+			return true;
+		else return false;
+	}
+	bool operator==(Fraction left, Fraction right)
+	{
+		left.to_improper();
+		right.to_improper();
+		if (left.get_numerator()*right.get_denominator() == right.get_numerator()*left.get_denominator())
+			return true;
+		else return false;
+	}
+	bool operator!=(Fraction left, Fraction right)
+	{
+	left.to_improper();
+		right.to_improper();
+		if (left.get_numerator()*right.get_denominator() != right.get_numerator()*left.get_denominator())
+			return true;
+		else return false;
+	}
+	//#define CONSTRUCTORS_CHECK
+
+	void main()
+	{
+		setlocale(LC_ALL, "");
+
+#ifdef CONSTRUCTORS_CHECK
+		Fraction A;
+		A.print();
+
+		Fraction B = 5;
+		B.print();
+
+		Fraction C(1, 2);
+		C.print();
+
+		Fraction D(2, 3, 4);
+		D.print();
+
+		Fraction E = C;
+		E.print();
+
+		A = D;
+		A.print();
+#endif // CONSTRUCTORS_CHECK
+
+		Fraction A(2, 3, 4);
+		Fraction B(9, 5);
+		A.print();
+		B.print();
+
+		int a = 2;
+		int b = 3;
+		int c = a*b;
+
+		Fraction C = A - B;
+		C.print();
+
+		Fraction D=A!=B;
+		D.print();
+
+		
+
+	}
