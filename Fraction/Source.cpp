@@ -281,7 +281,8 @@ ostream& operator<<(ostream& os, const Fraction& obj)
 }
 istream& operator>>(istream& is, /*const*/ Fraction& obj)
 {
-	int integer, numerator, denominator;
+	int integer=0, numerator=0, denominator=0;
+	//int OPERATOR [3] = {integer,numerator,denominator};
 	is >> integer;
 	is >> numerator; 
 	is >> denominator;	
@@ -289,6 +290,7 @@ istream& operator>>(istream& is, /*const*/ Fraction& obj)
 	obj.set_numerator(numerator);
 	obj.set_denominator(denominator);
 	return is;
+	
 }
 
 
