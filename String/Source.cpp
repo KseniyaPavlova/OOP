@@ -12,10 +12,6 @@ public:
 	{
 		return size;
 	}
-	/*const char* get_str()const
-	{
-		return str;
-	}*/
 	char* get_str()const
 	{
 		return str;
