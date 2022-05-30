@@ -26,7 +26,7 @@ public:
 		this->str = str;
 	}
 	//Constructors
-	String(int size = 80)
+	explicit String(int size = 80)
 	{
 		this->size = size;
 		this ->str = new char[size] {};
