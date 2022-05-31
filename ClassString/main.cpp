@@ -1,4 +1,4 @@
-#include<iostream>
+ï»¿#include<iostream>
 using std::cin;
 using std::cout;
 using std::endl;
@@ -6,8 +6,8 @@ class String;
 String operator+(const String& left, const String& right);
 class String
 {
-	int size;	//Ðàçìåðñòðîêè â Áàéòàõ
-	char* str;	//Óêàçàòåëü íà ñòðîêó
+	int size;	//Ð Ð°Ð·Ð¼ÐµÑ€ÑÑ‚Ñ€Ð¾ÐºÐ¸ Ð² Ð‘Ð°Ð¹Ñ‚Ð°Ñ…
+	char* str;	//Ð£ÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑŒ Ð½Ð° ÑÑ‚Ñ€Ð¾ÐºÑƒ
 public:
 	int get_size()const
 	{
@@ -42,8 +42,8 @@ public:
 	String(const String& other)
 	{
 		this->size = other.size;
-		//CopyConstrutor äîëæåí âûïîëíÿòü DeepCopy (Ïîáèòîâîå êîïèðîâàíèå),
-		//ò.å., âûäåëèòü íîâóþ ïàìÿòü, è ñêîïèðîâàòü â íåå ñîäåðæèìîå äðóãîãî îáúåêòà
+		//CopyConstrutor Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÑÑ‚ÑŒ DeepCopy (ÐŸÐ¾Ð±Ð¸Ñ‚Ð¾Ð²Ð¾Ðµ ÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ),
+		//Ñ‚.Ðµ., Ð²Ñ‹Ð´ÐµÐ»Ð¸Ñ‚ÑŒ Ð½Ð¾Ð²ÑƒÑŽ Ð¿Ð°Ð¼ÑÑ‚ÑŒ, Ð¸ ÑÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð² Ð½ÐµÐµ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ðµ Ð´Ñ€ÑƒÐ³Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
 		{
@@ -97,11 +97,11 @@ public:
 String operator+(const String& left, const String& right)
 {
 	String cat(left.get_size() + right.get_size() - 1);
-	//Ëåâóþ ñòðîêó êîïèðóåì ñîîòâåòñòâåííî
+	//Ð›ÐµÐ²ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ ÐºÐ¾Ð¿Ð¸Ñ€ÑƒÐµÐ¼ ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²ÐµÐ½Ð½Ð¾
 	for (int i = 0; i < left.get_size(); i++)
 		//cat.get_str()[i] = left.get_str()[i];
 		cat[i] = left[i];
-	//Ïðàâóþ ñòðîêó êîïèðóåì ñî ñìåùåíèåì âïðàâî íà ðàçìåð ëåâîé ñòðîêè 
+	//ÐŸÑ€Ð°Ð²ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ ÐºÐ¾Ð¿Ð¸Ñ€ÑƒÐµÐ¼ ÑÐ¾ ÑÐ¼ÐµÑ‰ÐµÐ½Ð¸ÐµÐ¼ Ð²Ð¿Ñ€Ð°Ð²Ð¾ Ð½Ð° Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð»ÐµÐ²Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸ 
 	for (int i = 0; i < right.get_size(); i++)
 		//cat.get_str()[i + left.get_size() - 1] = right.get_str()[i];
 		cat[i + left.get_size() - 1] = right[i];
@@ -150,6 +150,6 @@ void main()
 
 	str1 += str2;
 	cout << str1 << endl;
-	cout << "Ââåäèòå ñòðîêó: "; cin >> str1;
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÑ‚Ñ€Ð¾ÐºÑƒ: "; cin >> str1;
 	cout << str1 << endl;
 }
