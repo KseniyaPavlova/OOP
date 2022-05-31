@@ -2,7 +2,8 @@
 using std::cin;
 using std::cout;
 using std::endl;
-
+class String;
+String operator+(const String& left, const String& right);
 class String
 {
 	int size;	//Размерстроки в Байтах
@@ -20,7 +21,10 @@ public:
 	{
 		return str;
 	}
-
+	void set_str(char* str)
+	{
+		this->str = str;
+	}
 	//				Constructors:
 	explicit String(int size = 80)
 	{
@@ -68,6 +72,11 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
+	String& operator+=(const String& other)
+	{
+		*this = *this + other;
+		return *this;
+	}
 	const char& operator[](int i)const
 	{
 		return str[i];
@@ -103,7 +112,10 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 {
 	return os << obj.get_str();
 }
-
+std::istream& operator>>(std::istream& is, String& obj)
+{
+	return is >> obj.get_str();
+}
 //#define CONSTRUCTORS_CHECK
 
 void main()
@@ -132,7 +144,12 @@ void main()
 
 	String str1 = "Hello";
 	String str2("World");
-	String str3 = str1 + " " + str2;
-	//str3.print();
-	cout << str3 << endl;
+	//String str3 = str1 + " " + str2;
+	////str3.print();
+	//cout << str3 << endl;
+
+	str1 += str2;
+	cout << str1 << endl;
+	cout << "Введите строку: "; cin >> str1;
+	cout << str1 << endl;
 }

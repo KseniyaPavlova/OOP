@@ -493,7 +493,7 @@ void main()
 
 
 	Fraction A = 2.76;
-	//cout << "Введите простую дробь: "; cin >> A;
+	cout << "Введите простую дробь: "; cin >> A;
 	cout << A << endl;
 
 	//A.set_integer(123);
