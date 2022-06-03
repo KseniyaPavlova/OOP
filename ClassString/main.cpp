@@ -32,23 +32,23 @@ public:
 		//this->str = new char[size] {};
 		cout << "Def1aConstruct:\t" << this << endl;
 	}
-	String(const char* str) :size(strlen(str) + 1), str(new char[size] {})
+	String(const char* str) :String(strlen(str)+1)
 	{
 		//this->size = strlen(str) + 1;
 		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "Constructor:\t" << this << endl;
 	}
-	String(const String& other) :size(other.size), str(new char[size] {})
+	String(const String& other) :String(other.str)
 	{
 		//this->size = other.size;
 		//CopyConstrutor должен выполнять DeepCopy (Побитовое копирование),
 		//т.е., выделить новую память, и скопировать в нее содержимое другого объекта
 		//this->str = new char[size] {};
-		for (int i = 0; i < size; i++)
+		/*for (int i = 0; i < size; i++)
 		{
 			this->str[i] = other.str[i];
-		}
+		}*/
 		//---------------------------------------------------------------------------
 		cout << "CopyConstructor:" << this << endl;
 	}
@@ -136,8 +136,8 @@ std::istream& operator>>(std::istream& is, String& obj)
 	return is >> obj.get_str();
 }
 //#define CONSTRUCTORS_CHECK
-//#define MOVE_METHODS_CHECK
-#define CALLING_CONSTRUCTORS
+#define MOVE_METHODS_CHECK
+//#define CALLING_CONSTRUCTORS
 
 void main()
 {
@@ -166,13 +166,14 @@ void main()
 #ifdef MOVE_METHODS_CHECK
 	String str1 = "Hello";
 	String str2("World");
-	//String str3 = str1 + str2; //MoveConstructor
-	String str3;
+	String str3 = str1 + str2; //MoveConstructor
+	//String str3;
 	str3 = str1 + str2;
 	//String str3 = str1 + " " + str2;
 	////str3.print();
-	//cout << str3 << endl;
-
+	cout << str3 << endl;
+	String str4 = str3;
+	cout << str4 << endl;
 	/*str1 += str2;
 	cout << str1 << endl;
 	cout << "Введите строку: "; cin >> str1;
