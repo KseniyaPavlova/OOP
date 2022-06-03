@@ -52,6 +52,15 @@ public:
 		//---------------------------------------------------------------------------
 		cout << "CopyConstructor:" << this << endl;
 	}
+	String(String&& other)
+	{
+		//MoveConstructor выполняет ShallowCopy (Поверхностое копирование)
+		this->size = other.size;
+		this->str = other.str; //Копируем адрес памяти, принадлежащей другому объекту
+		other.size = 0;
+		other.str = nullptr; //Зануляем адрес памяти в другом объекте, чтобы эту память НЕ удалил деструктор
+		cout << "MoveConstructor:\t" << this << endl;
+	}
 	~String()
 	{
 		delete[] this->str;
@@ -70,6 +79,16 @@ public:
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	String& operator=(String&& other)
+	{
+		delete[] this->str;
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveAssignment:\t" << this << endl;
 		return *this;
 	}
 	String& operator+=(const String& other)
@@ -117,6 +136,7 @@ std::istream& operator>>(std::istream& is, String& obj)
 	return is >> obj.get_str();
 }
 //#define CONSTRUCTORS_CHECK
+//#define MOVE_METHODS_CHECK
 
 void main()
 {
@@ -142,14 +162,31 @@ void main()
 	str5.print();
 #endif // CONSTRUCTORS_CHECK
 
+#ifdef MOVE_METHODS_CHECK
 	String str1 = "Hello";
 	String str2("World");
+	//String str3 = str1 + str2; //MoveConstructor
+	String str3;
+	str3 = str1 + str2;
 	//String str3 = str1 + " " + str2;
 	////str3.print();
 	//cout << str3 << endl;
 
-	str1 += str2;
+	/*str1 += str2;
 	cout << str1 << endl;
 	cout << "Введите строку: "; cin >> str1;
-	cout << str1 << endl;
+	cout << str1 << endl;*/
+#endif // MOVE_METHODS_CHECK
+
+	String str1;			//Default constructor (Конструктор по-умолчанию)
+	String str2(55);		//Single-argument constructor (int) (Конструктор с одним параметром)
+	String str3 = "Hello";	//Single-argument constructor (const char*) (Конструктор с одним параметром)
+	String str4 = str3;		//Copy constructor (Конструктор копирования)
+	String str5;
+	str5 = str4;	        //Copy assignment
+	str5.print();
+	String str6();			//Здесь НЕ вызывается никаких конструкторов, и следовательно НЕ создается объект
+							//Здесь объявляется функция str6(), которая ничего не возвращет 
+	String str7{};			//Явный вызов конструктора по умолчанию
+	str7.print();
 }
