@@ -26,25 +26,25 @@ public:
 		this->str = str;
 	}
 	//				Constructors:
-	explicit String(int size = 80)
+	explicit String(int size = 80) :size(size), str(new char[size] {})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		cout << "Def1aConstruct:\t" << this << endl;
 	}
-	String(const char* str)
+	String(const char* str) :size(strlen(str) + 1), str(new char[size] {})
 	{
-		this->size = strlen(str) + 1;
-		this->str = new char[size] {};
+		//this->size = strlen(str) + 1;
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "Constructor:\t" << this << endl;
 	}
-	String(const String& other)
+	String(const String& other) :size(other.size), str(new char[size] {})
 	{
-		this->size = other.size;
+		//this->size = other.size;
 		//CopyConstrutor должен выполнять DeepCopy (Побитовое копирование),
 		//т.е., выделить новую память, и скопировать в нее содержимое другого объекта
-		this->str = new char[size] {};
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
 		{
 			this->str[i] = other.str[i];
@@ -52,11 +52,11 @@ public:
 		//---------------------------------------------------------------------------
 		cout << "CopyConstructor:" << this << endl;
 	}
-	String(String&& other)
+	String(String&& other) :size(other.size), str(other.str)
 	{
 		//MoveConstructor выполняет ShallowCopy (Поверхностое копирование)
-		this->size = other.size;
-		this->str = other.str; //Копируем адрес памяти, принадлежащей другому объекту
+		//this->size = other.size;
+		//this->str = other.str; //Копируем адрес памяти, принадлежащей другому объекту
 		other.size = 0;
 		other.str = nullptr; //Зануляем адрес памяти в другом объекте, чтобы эту память НЕ удалил деструктор
 		cout << "MoveConstructor:\t" << this << endl;
@@ -137,6 +137,7 @@ std::istream& operator>>(std::istream& is, String& obj)
 }
 //#define CONSTRUCTORS_CHECK
 //#define MOVE_METHODS_CHECK
+#define CALLING_CONSTRUCTORS
 
 void main()
 {
@@ -178,6 +179,7 @@ void main()
 	cout << str1 << endl;*/
 #endif // MOVE_METHODS_CHECK
 
+#ifdef CALLING_CONSTRUCTORS
 	String str1;			//Default constructor (Конструктор по-умолчанию)
 	String str2(55);		//Single-argument constructor (int) (Конструктор с одним параметром)
 	String str3 = "Hello";	//Single-argument constructor (const char*) (Конструктор с одним параметром)
@@ -189,4 +191,6 @@ void main()
 							//Здесь объявляется функция str6(), которая ничего не возвращет 
 	String str7{};			//Явный вызов конструктора по умолчанию
 	str7.print();
+#endif // CALLING_CONSTRUCTORS
+
 }
